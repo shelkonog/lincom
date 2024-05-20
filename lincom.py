@@ -42,7 +42,7 @@ else:
 
                 # вывод на экран результатов проверки
                 num_comp = conf_reg.print_rez_start(ipadd)
-                conf_reg.print_rez(headrs[0], num_comp, df_acl, df_root)
+                num_comp =conf_reg.print_rez(headrs[0], num_comp, df_acl, df_root)
 
                 # Получаев в словарь пользователей
                 pd_users = user_admin.get_df_user()

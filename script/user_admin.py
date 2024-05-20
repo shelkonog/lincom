@@ -24,8 +24,8 @@ def get_files(objects):
 
 
 def get_sudo_user(objects):
-    sudo_rj2 = re.compile(r'^([%\w]+)\s*(ALL[ALL,\=,\(,\),\:\s\w]*)\s+$')
-    sudo_rj3 = re.compile(r'^%(\w*)')
+    sudo_rj2 = re.compile(r'^([%\w-]+)\s*(ALL[ALL,\=,\(,\),\:\s\w]*)\s+$')
+    sudo_rj3 = re.compile(r'^%([\w-]+)')
     sudo_group = {
         'groups': [],
         'perm_g': [],
