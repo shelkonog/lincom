@@ -1,4 +1,5 @@
 import re
+import json
 import pandas as pd
 
 # коды цветов для печати
@@ -27,6 +28,7 @@ def load_to_DF(pd_dict):
     acl = re.compile('acl_cur')
     owner = re.compile('owner')
     admin = re.compile('perm')
+    passwd = re.compile('pass_change')
     df = pd.DataFrame(pd_dict)
     if acl.search(str(pd_dict.keys())):
         df.columns = ['Категория', 'Объект', 'Текущие', 'Стандартные']
@@ -34,6 +36,8 @@ def load_to_DF(pd_dict):
         df.columns = ['Категория', 'Объект', 'Владелец', 'Группа']
     elif admin.search(str(pd_dict.keys())):
         df.columns = ['Группа', 'Пользователи', 'Sudoers', 'Права']
+    elif passwd.search(str(pd_dict.keys())):
+        df.columns = ['Пользователь', 'Дата смены', 'След. смена', 'Статус']
     return df
 
 
@@ -46,25 +50,20 @@ def print_start(address, headr):
 def print_rez_start(ipadd):
     print()
     print(ENDC, f'Результаты проверки: {YELLOW} {ipadd}')
-    num_comp = 1
-    return num_comp
 
 
 def print_rez(headr, num_comp, *df):
     print(ENDC, f'---{headr}---')
     for df_i in df:
-        print(ENDC, f'Проверка № :   {num_comp}')
+        print(ENDC, f'Проверка № :   {num_comp + 1}')
         if not df_i.empty:
             print(YELLOW, df_i, ENDC)
             print()
         else:
             print(YELLOW, 'Нет данных', ENDC)
-        num_comp += 1
-    return num_comp
 
 
-def save_csv(ipadd, *df):
-    i = 0
+def save_csv(ipadd, i, *df):
     pd_empty = {
         '#####': [],
         '######': [],
@@ -74,11 +73,19 @@ def save_csv(ipadd, *df):
     df_empty = pd.DataFrame(pd_empty)
     try:
         for df_i in df:
-            if i == 0:
+            if i == 1:
                 df_i.to_csv('report/' + ipadd + '_.csv')
             else:
                 df_empty.to_csv('report/' + ipadd + '_.csv', mode='a')
                 df_i.to_csv('report/' + ipadd + '_.csv', mode='a')
-            i += 1
     except PermissionError:
         print(RED, f'Недостаточно прав для операции сохранения отчета {ipadd}', ENDC)
+
+
+def json_decod_er(file):
+    try:
+        with open(file, "r") as fh:
+            json.load(fh)
+    except json.JSONDecodeError:
+        return True
+    return False

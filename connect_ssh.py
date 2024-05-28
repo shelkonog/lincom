@@ -17,7 +17,7 @@ def connect_ssh_to(address, files):
     passwd = getpass.getpass()
     print(conf_reg.ENDC)
 
-    acl_dict = None
+    acl_dict = []
     with paramiko.SSHClient() as ssh_client:
         ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy)
         try:
@@ -39,7 +39,7 @@ def connect_ssh_to(address, files):
                 print(conf_reg.RED, f'{address}: {line}', conf_reg.ENDC)
 
             for line in stdout:
-                acl_dict = line
+                acl_dict.append(line)
 
             for file in files:
                 ssh_client.exec_command('rm ' + re.sub(r'config/|script/', '/tmp/', file))
@@ -70,20 +70,39 @@ def connect_ssh_to(address, files):
     return acl_dict
 
 
-def regular(str):
+def create_dict(list, dict1):
+    key = list[0]
+    for i in list:
+        if i in dict1:
+            key = i
+        else:
+            try:
+                dict1[key].append(i)
+            except KeyError:
+                print(conf_reg.RED, f'Ошибка при форматировании данных', conf_reg.ENDC)
+    return dict1
+
+
+def regular(lst_dict):
+
+    str_rez = str(lst_dict)
+
+    list_dict = []
     pd_dict = {
         'title': [],
         'object': [],
         'acl_cur': [],
         'acl_stan': []
     }
+    list_dict.append(pd_dict)
 
     pd_dict_root = {
-        'title': [],
-        'object': [],
+        'title_root': [],
+        'object_root': [],
         'owner': [],
         'group': []
     }
+    list_dict.append(pd_dict_root)
 
     df_users = {
         'groups': [],
@@ -91,38 +110,50 @@ def regular(str):
         'sudoers': [],
         'perm': []
     }
+    list_dict.append(df_users)
+
+    pd_user_pass = {
+        'user_': [],
+        'pass_change': [],
+        'max_time_change': [],
+        'status': []
+    }
+    list_dict.append(pd_user_pass)
+
+    sshd_conf = {
+            'key_ssh': [],
+            'value_ssh': [],
+            'value_stand_ssh': [],
+            'status_ssh': []
+        }
+    list_dict.append(sshd_conf)
+
+    auditd_conf = {
+            'key_audit': [],
+            'value_audit': [],
+            'value_stand_audit': [],
+            'status_audit': []
+    }
+    list_dict.append(auditd_conf)
 
     split = re.compile(r"\{[^\}]*\}")
     rj = re.compile(r"\'([^\']*)\'")
+    list_n = []
 
     try:
-        str1 = split.findall(str)[0]
-        str2 = split.findall(str)[1]
-        str3 = split.findall(str)[2]
+        count_dict = len(split.findall(str_rez))
+        for i in range(count_dict):
+            str_split = split.findall(str_rez)[i]
+            list_n.append(rj.findall(str_split))
 
-        list1 = rj.findall(str1)
-        list2 = rj.findall(str2)
-        list3 = rj.findall(str3)
     except IndexError:
-        list1, list2, list3 = [], [], []
+        list_n[i] = []
         print(conf_reg.RED, f'Ошибка получения данных с удаленного хоста', conf_reg.ENDC)
 
-    for i in list1:
-        if i in pd_dict:
-            key = i
-        else:
-            pd_dict[key].append(i)
+    for j in range(len(list_n)):
+        for dict_conf in list_dict:
+            if list_n[j][0] in dict_conf:
+                break
+        dict_conf = create_dict(list_n[j], dict_conf)
 
-    for i in list2:
-        if i in pd_dict_root:
-            key = i
-        else:
-            pd_dict_root[key].append(i)
-
-    for i in list3:
-        if i in df_users:
-            key = i
-        else:
-            df_users[key].append(i)
-
-    return pd_dict, pd_dict_root, df_users
+    return list_dict

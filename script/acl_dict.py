@@ -48,8 +48,8 @@ def add_pd_dict(pd_dict, key, obj, acl_cur, acl_stan):
 
 
 def add_pd_dict_root(pd_dict_root, key, obj, owner, group):
-    pd_dict_root['title'].append(key)
-    pd_dict_root['object'].append(obj)
+    pd_dict_root['title_root'].append(key)
+    pd_dict_root['object_root'].append(obj)
     pd_dict_root['owner'].append(owner)
     pd_dict_root['group'].append(group)
 
@@ -85,14 +85,11 @@ def get_pd_dict(title_obj, title_acl):
     }
 
     pd_dict_root = {
-        'title': [],
-        'object': [],
+        'title_root': [],
+        'object_root': [],
         'owner': [],
         'group': []
     }
-
-    '''pd_dict = OrderedDict(pd_d)
-    pd_dict_root = OrderedDict(pd_d_root)'''
 
     for key, value in title_obj.items():
         for obj in value:

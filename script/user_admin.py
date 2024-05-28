@@ -24,8 +24,9 @@ def get_files(objects):
 
 
 def get_sudo_user(objects):
-    sudo_rj2 = re.compile(r'^([%\w-]+)\s*(ALL[ALL,\=,\(,\),\:\s\w]*)\s+$')
+    sudo_rj2 = re.compile(r'^([%\w-]+)\s*(ALL[ALL,\=,\(,\),\:,\!,\/\s,\w]*)\s+$')
     sudo_rj3 = re.compile(r'^%([\w-]+)')
+
     sudo_group = {
         'groups': [],
         'perm_g': [],
@@ -100,7 +101,7 @@ def get_df_user():
 
     # заполняем словарь с УЗ  пользователями из passwd с id начиная с 1000
     for uid in pwd.getpwall():
-        if uid[2] > 999:
+        if uid[2] > 999 and uid[2] < 65534:
             index1 = None
             for list_users in df_users['users_']:
                 if uid[0] in list_users:
@@ -109,3 +110,22 @@ def get_df_user():
             if index1 is None:
                 add_df_users(df_users, uid[0], uid[0], '-', '-')
     return df_users
+
+
+def get_user_pass():
+    user_pass = {
+        'user_': [],
+        'pass_change': [],
+        'max_time_change': [],
+        'status': []
+    }
+
+    for i in pwd.getpwall():
+        if i.pw_gid == 0 or (i.pw_gid > 999 and i.pw_gid < 65534):
+            passwd_rez = os.popen('passwd -S ' + i.pw_name).readline().split(' ')
+            user_pass['user_'].append(passwd_rez[0])
+            user_pass['status'].append(passwd_rez[1])
+            user_pass['pass_change'].append(passwd_rez[2])
+            user_pass['max_time_change'].append(passwd_rez[4])
+
+    return user_pass
