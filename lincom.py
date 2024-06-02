@@ -7,7 +7,7 @@ import script.comp_conf as comp_conf
 
 
 files = ['script/acl_dict.py',
-         'config/access_2.cfg',
+         'config/acl_dir.jsn',
          'config/conf_srv.jsn',
          'script/comp_conf.py',
          'script/user_admin.py',
@@ -15,6 +15,7 @@ files = ['script/acl_dict.py',
          'config/target_add.cfg']
 
 headrs = [
+    'Данные о хосте и ОС',
     'Права доступа к файлам',
     'Владельцы файлов',
     'Пользователи и администраторы',
@@ -41,18 +42,15 @@ else:
     for ipadd in address:
         try:
             if IPv4Address(ipadd).is_loopback:
-
-                # создаем словарь с параметрами проверки из конфига
-                title_obj, title_acl = acl_dict.dict_access(files[1])
-
                 # получаем словарь для загрузки в Pandas
-                pd_dict, pd_dict_root = acl_dict.get_pd_dict(title_obj, title_acl)
-                # Получаев в словарь пользователей
-                pd_users = user_admin.get_df_user()
-                pd_user_pass = user_admin.get_user_pass()
-
-                for dict1 in (pd_dict, pd_dict_root, pd_users, pd_user_pass):
+                list_dict.append(acl_dict.get_os_info())
+                list_acl_dir_root = acl_dict.get_acl_dir_root(files[1])
+                for dict1 in list_acl_dir_root:
                     list_dict.append(dict1)
+                # Получаев в словарь пользователей
+                list_dict.append(user_admin.get_df_user())
+                list_dict.append(user_admin.get_user_pass())
+
                 for dict1 in comp_conf.rez_comp_conf(files[2]):
                     list_dict.append(dict1)
 
@@ -88,7 +86,7 @@ else:
                             # вывод на экран результатов проверки
                             conf_reg.print_rez(headrs[i], i, df_rez)
                             # Сохранение отчета
-                            conf_reg.save_csv(ipadd, df_rez)
+                            conf_reg.save_csv(ipadd, i, df_rez)
 
                     except ValueError:
                         print(conf_reg.RED, 'Ошибка в программе при записи в DataFrame на ', ipadd, conf_reg.ENDC)

@@ -25,19 +25,28 @@ def get_ipadd(file):
 
 
 def load_to_DF(pd_dict):
+    os_info = re.compile('name_title')
     acl = re.compile('acl_cur')
     owner = re.compile('owner')
     admin = re.compile('perm')
     passwd = re.compile('pass_change')
+    sshd = re.compile('key_ssh')
+    auditd = re.compile('key_audit')
     df = pd.DataFrame(pd_dict)
     if acl.search(str(pd_dict.keys())):
         df.columns = ['Категория', 'Объект', 'Текущие', 'Стандартные']
+    elif os_info.search(str(pd_dict.keys())):
+        df.columns = ['Параметр', 'Значение', '', '']
     elif owner.search(str(pd_dict.keys())):
         df.columns = ['Категория', 'Объект', 'Владелец', 'Группа']
     elif admin.search(str(pd_dict.keys())):
         df.columns = ['Группа', 'Пользователи', 'Sudoers', 'Права']
     elif passwd.search(str(pd_dict.keys())):
         df.columns = ['Пользователь', 'Дата смены', 'След. смена', 'Статус']
+    elif sshd.search(str(pd_dict.keys())):
+        df.columns = ['Параметр', 'Текущий', 'Стандартный', 'Статус']
+    elif auditd.search(str(pd_dict.keys())):
+        df.columns = ['Параметр', 'Текущий', 'Стандартный', 'Статус']
     return df
 
 

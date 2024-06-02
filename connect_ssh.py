@@ -88,6 +88,15 @@ def regular(lst_dict):
     str_rez = str(lst_dict)
 
     list_dict = []
+
+    dict_os_info = {
+        'name_title': [],
+        'params': [],
+        'params_empty1': [],
+        'params_empty2': []
+        }
+    list_dict.append(dict_os_info)
+
     pd_dict = {
         'title': [],
         'object': [],
