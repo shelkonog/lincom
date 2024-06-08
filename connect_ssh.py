@@ -145,6 +145,14 @@ def regular(lst_dict):
     }
     list_dict.append(auditd_conf)
 
+    journald_conf = {
+            'key_journal': [],
+            'value_journal': [],
+            'value_stand_journal': [],
+            'status_journal': []
+    }
+    list_dict.append(journald_conf)
+
     split = re.compile(r"\{[^\}]*\}")
     rj = re.compile(r"\'([^\']*)\'")
     list_n = []

@@ -25,7 +25,6 @@ def get_acl_stan(acl: str):
         acl_lst.append(acl_lst[0])
     for i in range(len(acl_lst)):
         acl_lst[i] = acl_lst[i].strip()
-    print(acl_lst)
     return acl_lst
 
 

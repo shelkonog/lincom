@@ -9,8 +9,6 @@
         "permitrootlogin": "no",
         "permitemptypasswords": "no",
         "permituserenvironment": "no",
-        "ciphers": "aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr",
-        "macs": "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256",
         "clientaliveInterval": "300",
         "clientaliveCountMax": "0",
         "allowgroups": "",
@@ -26,5 +24,13 @@
         "admin_space_left_action": "SYSLOG",
         "disk_full_action": "SYSLOG",
         "disk_error_action": "SYSLOG"
+    },
+    "journald_conf":{
+        "Storage": "persistent",
+        "#Storage": "persistent",
+        "Compress": "yes",
+        "#Compress": "yes",
+        "ForwardToSyslog": "yes",
+        "#ForwardToSyslog": "yes"
     }
 }

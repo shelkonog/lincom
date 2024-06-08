@@ -1,6 +1,7 @@
 import re
 import json
 import pandas as pd
+from tabulate import tabulate
 
 # коды цветов для печати
 RED = '\033[31m'
@@ -25,28 +26,23 @@ def get_ipadd(file):
 
 
 def load_to_DF(pd_dict):
-    os_info = re.compile('name_title')
-    acl = re.compile('acl_cur')
-    owner = re.compile('owner')
-    admin = re.compile('perm')
-    passwd = re.compile('pass_change')
-    sshd = re.compile('key_ssh')
-    auditd = re.compile('key_audit')
+    key_srv_conf = ['key_ssh', 'key_audit', 'key_journal']
     df = pd.DataFrame(pd_dict)
-    if acl.search(str(pd_dict.keys())):
+    key_list = list(pd_dict.keys())
+    if 'acl_cur' in key_list:
         df.columns = ['Категория', 'Объект', 'Текущие', 'Стандартные']
-    elif os_info.search(str(pd_dict.keys())):
+    elif 'name_title' in key_list:
         df.columns = ['Параметр', 'Значение', '', '']
-    elif owner.search(str(pd_dict.keys())):
+    elif 'owner' in key_list:
         df.columns = ['Категория', 'Объект', 'Владелец', 'Группа']
-    elif admin.search(str(pd_dict.keys())):
+    elif 'perm' in key_list:
         df.columns = ['Группа', 'Пользователи', 'Sudoers', 'Права']
-    elif passwd.search(str(pd_dict.keys())):
+    elif 'pass_change' in key_list:
         df.columns = ['Пользователь', 'Дата смены', 'След. смена', 'Статус']
-    elif sshd.search(str(pd_dict.keys())):
+    elif key_list[0] in key_srv_conf:
         df.columns = ['Параметр', 'Текущий', 'Стандартный', 'Статус']
-    elif auditd.search(str(pd_dict.keys())):
-        df.columns = ['Параметр', 'Текущий', 'Стандартный', 'Статус']
+        df.iloc[:, [3]] = df.iloc[:, [3]].replace('no', RED+'no pass'+YELLOW)
+        df.iloc[:, [3]] = df.iloc[:, [3]].replace('pass', GREEN+'pass'+YELLOW)
     return df
 
 
@@ -66,7 +62,7 @@ def print_rez(headr, num_comp, *df):
     for df_i in df:
         print(ENDC, f'Проверка № :   {num_comp + 1}')
         if not df_i.empty:
-            print(YELLOW, df_i, ENDC)
+            print(YELLOW, tabulate(df_i, headers='keys', tablefmt='psql'), ENDC)
             print()
         else:
             print(YELLOW, 'Нет данных', ENDC)

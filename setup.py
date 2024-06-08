@@ -2,7 +2,7 @@ from cx_Freeze import setup, Executable
 
 
 build_exe_options = {
-    "excludes": ["html", 'http', "xml"],
+    "includes": ['tabulate'],
     "include_files": ['config', 'report', 'script'],
     "zip_include_packages": ['numpy', "numpy.libs", 'pandas',
                              'paramiko', "email", 'rem_main', "nacl",
