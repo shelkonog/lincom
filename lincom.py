@@ -22,7 +22,9 @@ headrs = [
     'Смена парольной информации',
     'Конфигурация sshd',
     'Конфигурация auditd',
-    'Конфигурация journald'
+    'Конфигурация journald',
+    'Конфигурация rsyslog',
+    'Конфигурация logrotate'
     ]
 
 list_dict = []
@@ -48,13 +50,15 @@ else:
                 list_acl_dir_root = acl_dict.get_acl_dir_root(files[1])
                 for dict1 in list_acl_dir_root:
                     list_dict.append(dict1)
-                # Получаев в словарь пользователей
+                # словарь пользователей
                 list_dict.append(user_admin.get_df_user())
                 list_dict.append(user_admin.get_user_pass())
-
                 for dict1 in comp_conf.rez_comp_conf(files[2]):
-                    list_dict.append(dict1)
-
+                    if dict1.keys() != list_dict[-1].keys():
+                        list_dict.append(dict1.copy())
+                    else:
+                        for key in list_dict[-1].keys():
+                            list_dict[-1][key] = list_dict[-1][key] + dict1[key]
                 try:
                     # Загружаем словари в Pandas
                     for i in range(len(list_dict)):

@@ -153,6 +153,22 @@ def regular(lst_dict):
     }
     list_dict.append(journald_conf)
 
+    rsyslog_conf = {
+                'key_rsyslog': [],
+                'value_rsyslog': [],
+                'value_stand_rsyslog': [],
+                'status_rsyslog': []
+        }
+    list_dict.append(rsyslog_conf)
+
+    logrotate_conf = {
+                'key_logrotate': [],
+                'value_logrotate': [],
+                'value_stand_logrotate': [],
+                'status_logrotate': []
+        }
+    list_dict.append(logrotate_conf)
+
     split = re.compile(r"\{[^\}]*\}")
     rj = re.compile(r"\'([^\']*)\'")
     list_n = []

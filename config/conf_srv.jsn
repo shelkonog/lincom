@@ -32,5 +32,26 @@
         "#Compress": "yes",
         "ForwardToSyslog": "yes",
         "#ForwardToSyslog": "yes"
+    },
+    "rsyslog_conf":{
+        "authpriv.*": "/var/log/secure",
+        "auth,authpriv.*": "/var/log/auth.log",
+        "cron.*": "/var/log/cron",
+        "kern.*": "-/var/log/kern.log",
+        "*.emerg": ":omusrmsg:*",
+        "*.*": "@127.0.0.1",
+        "d_auth": "file(/var/log/auth.log)",
+        "d_cron": "file(/var/log/cron.log)",
+        "d_kern": "file(/var/log/kern.log)",
+        "d_syslog": "file(/var/log/syslog)"
+    },
+    "logrotate_conf":{
+        "logrotate": "weekly, rotate 20",
+        "/var/log/syslog": "weekly, rotate 20",
+        "/var/log/ufw": "weekly, rotate 20",
+        "/var/log/audit": "weekly, rotate 20",
+        "/var/log/secure": "weekly, rotate 20",
+        "/var/log/firewalld": "weekly, rotate 20",
+        "/var/log/auth.log": "weekly, rotate 20"
     }
 }
