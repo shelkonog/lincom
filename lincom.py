@@ -24,7 +24,8 @@ headrs = [
     'Конфигурация auditd',
     'Конфигурация journald',
     'Конфигурация rsyslog',
-    'Конфигурация logrotate'
+    'Конфигурация logrotate',
+    'Конфигурация auditd_rules'
     ]
 
 list_dict = []
@@ -54,11 +55,7 @@ else:
                 list_dict.append(user_admin.get_df_user())
                 list_dict.append(user_admin.get_user_pass())
                 for dict1 in comp_conf.rez_comp_conf(files[2]):
-                    if dict1.keys() != list_dict[-1].keys():
-                        list_dict.append(dict1.copy())
-                    else:
-                        for key in list_dict[-1].keys():
-                            list_dict[-1][key] = list_dict[-1][key] + dict1[key]
+                    list_dict.append(dict1.copy())
                 try:
                     # Загружаем словари в Pandas
                     for i in range(len(list_dict)):
@@ -82,6 +79,8 @@ else:
                 else:
                     # получаем словарь для загрузки в Pandas
                     list_dict = con_ssh.regular(str_stdout)
+
+                    print('@@@@@@@@@@@', list_dict)
 
                     try:
                         conf_reg.print_rez_start(ipadd)

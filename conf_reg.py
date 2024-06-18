@@ -26,7 +26,8 @@ def get_ipadd(file):
 
 
 def load_to_DF(pd_dict):
-    key_srv_conf = ['key_ssh', 'key_audit', 'key_journal', 'key_rsyslog', 'key_logrotate']
+    key_srv_conf = ['key_ssh', 'key_audit', 'key_journal',
+                    'key_rsyslog', 'key_logrotate', 'key_auditrule']
     df = pd.DataFrame(pd_dict)
     key_list = list(pd_dict.keys())
     if 'acl_cur' in key_list:

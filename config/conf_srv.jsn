@@ -53,5 +53,14 @@
         "/var/log/secure": "weekly, rotate 20",
         "/var/log/firewalld": "weekly, rotate 20",
         "/var/log/auth.log": "weekly, rotate 20"
+    },
+    "auditrule_conf":{
+        "cron": "6",
+        "etcgroup": "2",
+        "etcpasswd": "2",
+        "actions": "2",
+        "opasswd": "1",
+        "remote_shell": "2",
+        "perm_mod": "4"
     }
 }

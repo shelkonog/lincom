@@ -169,6 +169,14 @@ def regular(lst_dict):
         }
     list_dict.append(logrotate_conf)
 
+    auditrule_conf = {
+                'key_auditrule': [],
+                'value_auditrule': [],
+                'value_stand_auditrule': [],
+                'status_auditrule': []
+        }
+    list_dict.append(auditrule_conf)
+
     split = re.compile(r"\{[^\}]*\}")
     rj = re.compile(r"\'([^\']*)\'")
     list_n = []
