@@ -111,11 +111,13 @@ if len(sys.argv) == 1:
                     print(conf_reg.RED, 'Один или несколько адресов заданы не верно ', address, conf_reg.ENDC)
 
     else:
-        print(conf_reg.RED, 'Для выполнения программы требуются права root.',  conf_reg.ENDC)
+        print(conf_reg.RED, 'Для выполнения программы требуются привелегии root. Используйте программу sudo',  conf_reg.ENDC)
 
 elif len(sys.argv) == 2 and sys.argv[1] == '-v':
     print('Версия программы 1.0 ')
 elif len(sys.argv) == 2 and sys.argv[1] == '-h':
-    print('Здесь будет справка о программе ')
+    with open('config/help', 'r') as help_file:
+        for help in help_file.readlines():
+            print(help, end='')
 else:
-    print('Не верно указаны аргументы программы. Для справки запустите программу с аргументом -h')
+    print('Не верно указаны параметры программы. Для справки запустите программу с параметром -h')
