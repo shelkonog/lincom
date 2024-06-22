@@ -1,0 +1,25 @@
+{
+    "PAM": {
+        "755, 644": ["etc/pam.d/",
+                    "/usr/lib/x86_64-linux-gnu/security/"]
+    },
+    "crontab": {
+        "700, 600": ["/etc/crontab",
+                    "/etc/cron.d",
+                    "/etc/cron.daily",
+                    "/etc/cron.hourly",
+                    "/etc/cron.weekly",
+                    "/etc/cron.monthly"]
+    },
+    "start_script": {
+        "755, 755": "/etc/init.d/"
+    },
+    "sys_bin":{
+        "-w, -w": ["/usr/local/sbin",
+            "/usr/local/bin",
+            "/usr/sbin",
+            "/usr/bin",
+            "/usr/libexec"
+        ]
+    }
+}
