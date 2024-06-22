@@ -62,5 +62,42 @@
         "opasswd": "1",
         "remote_shell": "2",
         "perm_mod": "4"
+    },
+    "password_conf":{
+        "PASS_MAX_DAYS": "60",
+        "PASS_MIN_DAYS": "5",
+        "PASS_MIN_LEN": "16",
+        "LOGIN_RETRIES": "5",
+        "LOGIN_TIMEOUT": "60",
+        "ENCRYPT_METHOD": "SHA512",
+        "minlen": "15"
+    },
+    "services_conf": {
+        "avahi-daemon": "removed",
+        "systemd-timesyncd.service": "enabled",
+        "cups": "removed",
+        "dhcpd":"removed",
+        "slapd": "removed",
+        "nfs": "removed",
+        "smb": "removed",
+        "rpcbind": "disabled",
+        "named": "disabled",
+        "vsftpd": "disabled",
+        "httpd": "removed",
+        "dovecot": "removed",
+        "squid": "removed",
+        "snmpd": "removed",
+        "rsyncd": "removed",
+        "ypserv": "removed",
+        "ufw": "enabled",
+        "firewalld": "enabled"
+    },
+    "client_conf": {
+        "xserver-xorg*": "removed",
+        "xorg-x11*": "removed",
+        "ypbind": "removed",
+        "rsh": "removed",
+        "talk": "removed",
+        "telnet": "removed"
     }
 }

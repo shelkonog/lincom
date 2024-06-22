@@ -177,6 +177,30 @@ def regular(lst_dict):
         }
     list_dict.append(auditrule_conf)
 
+    password_conf = {
+                'key_password': [],
+                'value_password': [],
+                'value_stand_password': [],
+                'status_password': []
+        }
+    list_dict.append(password_conf)
+
+    services_conf = {
+                'key_services': [],
+                'value_services': [],
+                'value_stand_services': [],
+                'status_services': []
+        }
+    list_dict.append(services_conf)
+
+    soft_not_allowed = {
+                'soft_1': [],
+                'soft_2': [],
+                'soft_3': [],
+                'soft_4': []
+        }
+    list_dict.append(soft_not_allowed)
+
     split = re.compile(r"\{[^\}]*\}")
     rj = re.compile(r"\'([^\']*)\'")
     list_n = []

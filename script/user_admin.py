@@ -4,6 +4,15 @@ import re
 import os
 
 
+# коды цветов для печати
+RED = '\033[31m'
+GREEN = '\033[32m'
+YELLOW = '\033[33m'
+BLUE = '\033[34m'
+PURPLE = '\033[35m'
+ENDC = '\033[m'
+
+
 def add_df_users(df_users, group, user, sudo, perm):
     df_users['groups'].append(group)
     df_users['users_'].append(user)
@@ -37,15 +46,18 @@ def get_sudo_user(objects):
     files = get_files(objects)
 
     for file in files:
-        with open(file, 'r') as access_file:
-            for string in access_file.readlines():
-                if sudo_rj2.search(string):
-                    if sudo_rj3.search(string):
-                        sudo_group['groups'].append(sudo_rj3.search(string).group(1))
-                        sudo_group['perm_g'].append(sudo_rj2.search(string).group(2))
-                    else:
-                        sudo_group['users_'].append(sudo_rj2.search(string).group(1))
-                        sudo_group['perm_u'].append(sudo_rj2.search(string).group(2))
+        try:
+            with open(file, 'r') as access_file:
+                for string in access_file.readlines():
+                    if sudo_rj2.search(string):
+                        if sudo_rj3.search(string):
+                            sudo_group['groups'].append(sudo_rj3.search(string).group(1))
+                            sudo_group['perm_g'].append(sudo_rj2.search(string).group(2))
+                        else:
+                            sudo_group['users_'].append(sudo_rj2.search(string).group(1))
+                            sudo_group['perm_u'].append(sudo_rj2.search(string).group(2))
+        except PermissionError:
+            print(RED, 'Не достаточно прав для выполнения программы', ENDC)
     return sudo_group
 
 

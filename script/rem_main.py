@@ -7,6 +7,8 @@ files = ['/tmp/acl_dict.py',
          '/tmp/acl_dir.jsn',
          '/tmp/user_admin.py',
          '/tmp/conf_srv.jsn',
+         '/tmp/white_list_deb',
+         '/tmp/white_list_rpm',
          '/tmp/comp_conf.py']
 
 if not acl_dict.file_exist(files):
@@ -19,3 +21,5 @@ else:
 
     for rez_i in comp_conf.rez_comp_conf(files[3]):
         print(rez_i)
+
+    print(comp_conf.get_soft_not_allowed(files[4], files[5]))

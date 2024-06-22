@@ -27,7 +27,8 @@ def get_ipadd(file):
 
 def load_to_DF(pd_dict):
     key_srv_conf = ['key_ssh', 'key_audit', 'key_journal',
-                    'key_rsyslog', 'key_logrotate', 'key_auditrule']
+                    'key_rsyslog', 'key_logrotate', 'key_auditrule',
+                    'key_password', 'key_services']
     df = pd.DataFrame(pd_dict)
     key_list = list(pd_dict.keys())
     if 'acl_cur' in key_list:
@@ -40,6 +41,8 @@ def load_to_DF(pd_dict):
         df.columns = ['Группа', 'Пользователи', 'Sudoers', 'Права']
     elif 'pass_change' in key_list:
         df.columns = ['Пользователь', 'Дата смены', 'След. смена', 'Статус']
+    elif 'soft_1' in key_list:
+        df.columns = ['Не согласованное ПО', 'Не согласованное ПО', 'Не согласованное ПО', 'Не согласованное ПО']
     elif key_list[0] in key_srv_conf:
         df.columns = ['Параметр', 'Текущий', 'Стандартный', 'Статус']
         df.iloc[:, [3]] = df.iloc[:, [3]].replace('no', RED+'no pass'+YELLOW)
@@ -50,7 +53,9 @@ def load_to_DF(pd_dict):
 def print_start(address, headr):
     print()
     print(ENDC, f'Внутренний аудит настроек серверов : {YELLOW} {address}')
-    print(ENDC, f'Перечень проверок : {YELLOW} {headr}', ENDC)
+    print(ENDC, 'Перечень проверок :', ENDC)
+    for number, headr_i in enumerate(headr):
+        print(ENDC, f'{YELLOW} {number + 1}. {headr_i}', ENDC)
 
 
 def print_rez_start(ipadd):
@@ -63,6 +68,7 @@ def print_rez(headr, num_comp, *df):
     for df_i in df:
         print(ENDC, f'Проверка № :   {num_comp + 1}')
         if not df_i.empty:
+            df_i = df_i.apply(lambda s: s.str[:25])
             print(YELLOW, tabulate(df_i, headers='keys', tablefmt='psql'), ENDC)
             print()
         else:
